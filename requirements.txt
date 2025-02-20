@@ -3,3 +3,13 @@ ont-fast5-api
 pod5
 matplotlib
 scikit-learn
+numpy==1.21.6
+pandas==1.2.3
+scipy==1.7.3
+h5py==3.7.0
+tqdm==4.64.1
+python-dateutil==2.8.2
+pytz==2022.7
+six==1.16.0
+setuptools==59.8.0
+wheel==0.38
