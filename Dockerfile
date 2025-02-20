@@ -40,6 +40,12 @@ RUN apt-get update && apt-get install -y \
 
 RUN mkdir -p /opt/TDFPS
 COPY . /opt/TDFPS
+WORKDIR /tmp/
+
+RUN wget https://bootstrap.pypa.io/pip/3.7/get-pip.py \
+    && python3.7 get-pip.py \
+    && rm get-pip.py
+
 WORKDIR /opt/TDFPS
 RUN python3.7 -m pip install --upgrade pip \
     && python3.7 -m pip install --no-cache-dir -r requirements.txt \
