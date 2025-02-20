@@ -1,0 +1,6 @@
+[submodule "slow5lib"]
+	path = slow5lib
+	url = https://github.com/hasindu2008/slow5lib.git
+[submodule "squigulator"]
+	path = squigulator
+	url = https://github.com/hasindu2008/squigulator.git
