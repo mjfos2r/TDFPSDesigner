@@ -1,5 +1,9 @@
 # TDFPS-Designer: an efficient toolkit for barcode design and selection in nanopore sequencing
 
+***
+IGNORE EVERYTHING ABOUT INSTALLATION BELOW. THIS IS AVAILABLE AS A DOCKER CONTAINER. 
+***
+
 ## Overview
 TDFPS-Designer can be used on the linux system, the main functions as follows:
 
