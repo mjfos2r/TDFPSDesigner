@@ -15,15 +15,15 @@ RUN apt-get update && apt-get install -y software-properties-common \
 # now install it all
 RUN apt-get update && apt-get install -y \
     build-essential \
-    cuda-compiler-12-3 \
-    cuda-cudart-dev-12-3 \
-    cuda-nvcc-12-3 \
-    libcublas-12-3 \
-    libcublas-dev-12-3 \
-    libcufft-12-3 \
-    libcufft-dev-12-3 \
-    libcurand-12-3 \
-    libcurand-dev-12-3 \
+    cuda-compiler-12-8 \
+    cuda-cudart-dev-12-8 \
+    cuda-nvcc-12-8 \
+    libcublas-12-8 \
+    libcublas-dev-12-8 \
+    libcufft-12-8 \
+    libcufft-dev-12-8 \
+    libcurand-12-8 \
+    libcurand-dev-12-8 \
     libffi-dev \
     libhdf5-dev \
     libfftw3-dev \
@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     python3.7 \
     python3.7-dev \
-    python3-pip \
+    python3.7-distutils \
     zlib1g-dev \
     libzstd-dev \
     wget \
