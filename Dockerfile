@@ -10,7 +10,7 @@ LABEL org.opencontainers.image.authors="Michael J. Foster" \
 
 # Add deadsnakes ugh.
 RUN apt-get update && apt-get install -y software-properties-common \
-    && sudo add-apt-repository -y ppa:deadsnakes/ppa
+    && add-apt-repository -y ppa:deadsnakes/ppa
 
 # now install it all
 RUN apt-get update && apt-get install -y \
