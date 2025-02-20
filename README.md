@@ -4,6 +4,15 @@
 IGNORE EVERYTHING ABOUT INSTALLATION BELOW. THIS IS AVAILABLE AS A DOCKER CONTAINER. 
 ***
 
+## Docker Version Usage:
+
+So all you've gotta do to use this is: `docker pull mjfos2r/tdfps-designer`
+To launch an interactive shell within the container, `docker run -v $(pwd)/data:/data -it mjfos2r/tdfps-designer`
+Make sure you mount whatever directory to `/data` so that you can write files from the container.
+Paths within the container also need to be changed to reflect that our mounted volume is `/data`
+
+Now that you've got the container, follow along with the instructions below the installation steps.
+
 ## Overview
 TDFPS-Designer can be used on the linux system, the main functions as follows:
 
