@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.8.0-base-ubuntu22.04
+FROM nvidia/cuda:12.4.0-base-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -15,15 +15,15 @@ RUN apt-get update && apt-get install -y software-properties-common \
 # now install it all
 RUN apt-get update && apt-get install -y \
     build-essential \
-    cuda-compiler-12-8 \
-    cuda-cudart-dev-12-8 \
-    cuda-nvcc-12-8 \
-    libcublas-12-8 \
-    libcublas-dev-12-8 \
-    libcufft-12-8 \
-    libcufft-dev-12-8 \
-    libcurand-12-8 \
-    libcurand-dev-12-8 \
+    cuda-compiler-12-4 \
+    cuda-cudart-dev-12-4 \
+    cuda-nvcc-12-4 \
+    libcublas-12-4 \
+    libcublas-dev-12-4 \
+    libcufft-12-4 \
+    libcufft-dev-12-4 \
+    libcurand-12-4 \
+    libcurand-dev-12-4 \
     libffi-dev \
     libhdf5-dev \
     libfftw3-dev \
