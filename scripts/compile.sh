@@ -6,7 +6,7 @@ nvcc -std=c++11 \
 	-Xcompiler \
 	-fopenmp \
 	-arch=sm_86 \
-	-gencode=arch=compute_86,code=SM_86
+	-gencode=arch=compute_86,code=sm_86
 
 nvcc -std=c++11 \
 	-o ../bin/CalDTWDistMatrixMN \
@@ -14,7 +14,7 @@ nvcc -std=c++11 \
 	-Xcompiler \
 	-fopenmp \
 	-arch=sm_86 \
-	-gencode=arch=compute_86,code=SM_86
+	-gencode=arch=compute_86,code=sm_86
 
 nvcc -std=c++11 \
 	-o ../bin/FpsCudaDTWThreshold \
@@ -22,6 +22,6 @@ nvcc -std=c++11 \
 	-Xcompiler \
 	-fopenmp \
 	-arch=sm_86 \
-	-gencode=arch=compute_86,code=SM_86
+	-gencode=arch=compute_86,code=sm_86
 
 echo compile  finished!
