@@ -1,4 +1,5 @@
 #!/bin/sh
+echo "Currently in: $(pwd)"
 
 nvcc -std=c++11 \
 	-o ../bin/CalDTWDistMatrixMNSigroot \
