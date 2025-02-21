@@ -5,8 +5,7 @@ nvcc -std=c++11 \
 	-o bin/CalDTWDistMatrixMNSigroot \
 	cuda/CalDTWDistMatrixMNSigroot.cu \
 	-Xcompiler \
-	-fopenmp \
-	-arch=sm_86
+	-fopenmp
 
 nvcc -std=c++11 \
 	-o bin/CalDTWDistMatrixMN \
