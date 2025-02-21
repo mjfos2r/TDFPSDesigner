@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 LABEL org.opencontainers.image.authors="Michael J. Foster" \
     org.opencontainers.image.source="https://github.com/mjfos2r/TDFPS_Designer" \
     org.opencontainers.image.description="container housing my fork of junhaiqi/TDFPS-Designer, a toolkit for the generation/demux of custom barcodes for use in ONT sequencing." \
-    org.opencontainers.image.version="1.0.0" \
+    org.opencontainers.image.version="1.0.4" \
     maintainer="mfoster11<at>mgh<dot>harvard<dot>edu"
 
 # Add deadsnakes ugh.
@@ -56,6 +56,7 @@ RUN python3.7 -m pip install --upgrade pip \
     && make \
     && cp squigulator ../bin/squigulator \
     && cd .. \
+    && ./scripts/compile.sh \
     && chmod u+x bin/*
 
 # now we make sure that all of our cuda paths are kosher
