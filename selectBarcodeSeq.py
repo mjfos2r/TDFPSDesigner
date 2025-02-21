@@ -138,11 +138,9 @@ def fromFastaFile2Signal(fastaFilePath, threadNum, kit = '', output_folder = 'te
     # output_folder = f'{output_folder}/{selectLength}mer_init_filter_results_nanopore_sigs'
     print('######%d noise nanopore signals are being generated######'% len(seqIDList))
     generate_start_time = time()
-    if not os.path.exists( output_folder ):
-        os.makedirs( output_folder )
     if kit == 'dna-r9-min':
-#        if not os.path.exists( output_folder ):
-#            os.makedirs( output_folder )
+        if not os.path.exists( output_folder ):
+            os.makedirs( output_folder )
         generateTrueNanoporeSignal(
             seqTupleList=seqTupleList, output_folder=output_folder, sigroot='timeSeries', threadNum=threadNum)
     else:
@@ -588,7 +586,7 @@ def get_parameters():
 def main():
 
     args = get_parameters()
-
+    os.makedirs('tempoutput', exist_ok=True)
     byFPSCudaDTWFinalSelection(selectLength=args.length, selectQuantity=args.qsize, randomSeed=args.seed, \
                                outDir = args.outdir, \
                                thresFactor=args.threshold, threadNum=args.thread_num, mode=args.mode, fastaFilePath=args.fasta, \
