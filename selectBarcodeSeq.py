@@ -26,7 +26,7 @@ if 'module/simSigsBySquigulator/' not in sys.path:
     sys.path.append('module/simSigsBySquigulator/')
 
 #####################################################################################################################
-# Note: Given the DNA sequence, based on the 5-mer table, we can obtain its noise-free nanopore signal or simulated 
+# Note: Given the DNA sequence, based on the 5-mer table, we can obtain its noise-free nanopore signal or simulated
 # nanopore signal containing noise. We can choose barcode from the noiseless signal space or the noisy signal space.
 
 from generatNoiseSignal import sequence_to_true_signal, generate_noisy_sigs # From noise signal space to select barcode signal.
@@ -62,7 +62,7 @@ def sig2text(sigList, outFile):
     file.close()
 
 def f2t(fast5Filepath, outSigsDir, mode = None):  # This can be a single- or multi-read file, transfer fast5s to text files.
-        
+
     if not os.path.exists(outSigsDir):
         os.makedirs(outSigsDir)
 
@@ -91,7 +91,7 @@ def squigulatorAPI(fastaFile, kit, outDir, mode = None, ideal = False, ideal_amp
             fast5 = fast5)
     if fast5:
         f2t(fast5Filepath = fast5Path, outSigsDir = outDir, mode = mode)
-   
+
 def getSeqList(file_name='24mer_filter_results.fasta'):
     with open(file_name, 'r') as f:
         text = f.read()
@@ -138,10 +138,11 @@ def fromFastaFile2Signal(fastaFilePath, threadNum, kit = '', output_folder = 'te
     # output_folder = f'{output_folder}/{selectLength}mer_init_filter_results_nanopore_sigs'
     print('######%d noise nanopore signals are being generated######'% len(seqIDList))
     generate_start_time = time()
-
+    if not os.path.exists( output_folder ):
+        os.makedirs( output_folder )
     if kit == 'dna-r9-min':
-        if not os.path.exists( output_folder ):
-            os.makedirs( output_folder )
+#        if not os.path.exists( output_folder ):
+#            os.makedirs( output_folder )
         generateTrueNanoporeSignal(
             seqTupleList=seqTupleList, output_folder=output_folder, sigroot='timeSeries', threadNum=threadNum)
     else:
@@ -156,7 +157,7 @@ def fromFastaFile2Signal(fastaFilePath, threadNum, kit = '', output_folder = 'te
     print('######%d noise nanopore signals are generated! Total time: %fs######' %
         (len(seqIDList), generate_end_time - generate_start_time))
     print('\n')
-    
+
     seqTupleDict = {}
     for item in seqTupleList:
         seqTupleDict[item[1]] = item[0]
@@ -168,7 +169,7 @@ def FromInitialSelectionToGetSinal(selectLength=24, selectQuantity=10000, random
     print('######Initial selection######')
     if not os.path.exists( outDir ):
         os.makedirs( outDir )
-    
+
     initialSelectionFile = f'{outDir}/{selectLength}mer_init_filter_results.fasta'
     output_folder = f'{outDir}/{selectLength}mer_init_filter_results_nanopore_sigs'
     init_start_time = time()
@@ -182,10 +183,10 @@ def FromInitialSelectionToGetSinal(selectLength=24, selectQuantity=10000, random
     seqTupleDict = fromFastaFile2Signal(fastaFilePath = initialSelectionFile, threadNum = threadNum, kit = kit, output_folder = output_folder)
 
     return seqTupleDict
-    
+
 def byFPSCudaDTWFinalSelection(selectLength=24, selectQuantity=10000, randomSeed=0, \
                                outDir = 'test',
-                               mode = 'fasta', 
+                               mode = 'fasta',
                                fastaFilePath='test.fasta',
                                thresFactor=0, threadNum=32, filter2 = False, kit = ''):
     start_time = time()
@@ -200,18 +201,18 @@ def byFPSCudaDTWFinalSelection(selectLength=24, selectQuantity=10000, randomSeed
     else:
         output_folder = f'{outDir}/{selectLength}mer_fasta_results_nanopore_sigs'
         seqTupleDict = fromFastaFile2Signal(fastaFilePath = fastaFilePath, threadNum = threadNum, output_folder = output_folder, kit = kit)
-    
+
     print("######Final selection######")
     slectedInfoFile = f'{outDir}/TDFPS.info'
     FPSCudaDTWCommand = './bin/FpsCudaDTWThreshold -i %s -l %d -o %s -t %f' \
                         %(output_folder, selectLength, slectedInfoFile, thresFactor)
-    
+
     os.system(command=FPSCudaDTWCommand)
-    
+
     with open(slectedInfoFile, 'r') as sif:
         lines = sif.readlines()
         selectedSeqIndexList = [int(item) for item in lines[-1].strip('\n').split(' ') if item != '']
-    
+
     firstSelectedFile = f'{outDir}/first_selected_barcodes.fa'
     writeFile = open(firstSelectedFile, 'w')
     t = 0
@@ -222,9 +223,9 @@ def byFPSCudaDTWFinalSelection(selectLength=24, selectQuantity=10000, randomSeed
         t += 1
     writeFile.close()
     end_time = time()
-    
+
     print('The total time for the entire barcode selection process is: %fs.'%(end_time - start_time))
-    
+
 from sklearn.metrics import recall_score, precision_score, f1_score
 import random
 import numpy as np
@@ -252,14 +253,14 @@ def get_signal_file(filetxt_path):
     signal = np.array(signal_list)
     return signal
 
-def find_barcode_region(raw_signal_file, query_signal_file, 
+def find_barcode_region(raw_signal_file, query_signal_file,
                         bar_len = 24, out_bar_sig = '', kit = 'dna-r9-min', region_cutoff = 1000):
 
     # estimateBarcodeLength = BarcodeLength * 10 + 70 # a super parameter.
     est_bar_len = bar_len * 10 + 70
     raw_signal = get_signal_file(filetxt_path = raw_signal_file)[0:region_cutoff]
     query_signal = get_signal_file(filetxt_path = query_signal_file)
-    
+
     if kit == 'dna-r9-min' or kit == 'dna-r9-prom':
         position_start = fromLongRefFindShortQuery(raw_signal, query_signal)[1]
         queryed_signal = raw_signal[position_start + 40: position_start + 40 + est_bar_len]
@@ -274,7 +275,7 @@ def find_barcode_region(raw_signal_file, query_signal_file,
             f.write('%s\n'%str(item))
     return queryed_signal
 
-def muti_find(raw_signa_dir, query_signal_path = '', ex_out_dir = '', bar_len = 24, 
+def muti_find(raw_signa_dir, query_signal_path = '', ex_out_dir = '', bar_len = 24,
               thread_num = 16, sig_root = 'timeSeries', kit = 'dna-r9-min', region_cutoff = 1000):
     decode_num = len(os.listdir(raw_signa_dir))
     args1 = [raw_signa_dir + '/' + '%s_%d.txt'%(sig_root, i)
@@ -284,7 +285,7 @@ def muti_find(raw_signa_dir, query_signal_path = '', ex_out_dir = '', bar_len = 
     args4 = [ex_out_dir + '/' + '%s_%d.txt'%(sig_root, i) for i in range(decode_num)]
     args5 = [kit for i in range(decode_num)]
     args6 = [region_cutoff for i in range(decode_num)]
-    
+
     args = [(args1[i], args2[i], args3[i], args4[i], args5[i], args6[i]) for i in range(decode_num)]
 
     start_time = time()
@@ -307,7 +308,7 @@ def findOutliersBound(data, threshold = 5):
 
 def demultiplexingByDistMatrix(DistMatrix=[[1, 2, 3, 4], [2, 1, 7, 9], [1, 2, 3, 4], [2, 1, 7, 9]]):
     DistMatrix = [list(item) for item in np.transpose(DistMatrix)]
-    resList = [-1 for row in DistMatrix]  # '-1' indicates the barcode label is fuzzy. 
+    resList = [-1 for row in DistMatrix]  # '-1' indicates the barcode label is fuzzy.
     distList = [min(row) for row in DistMatrix]
     outBound = findOutliersBound(distList)
     t = 0
@@ -405,7 +406,7 @@ class BarcodeSet:  # inital barcode set --> final barcode set
             out_sig_path = f'{out_dir_path}/{sig_root}_{count}.txt'
             self.sig2text( read['signal'], out_sig_path )
             count += 1
-    
+
     def generate_strand_library_seqs(self, read_len = 100):
         if not os.path.exists( self.out_dir ):
             os.makedirs( self.out_dir )
@@ -413,7 +414,7 @@ class BarcodeSet:  # inital barcode set --> final barcode set
         barcode_seqs = self.read_fasta_sequences( self.bar_fa_file )  # read short barcode sequences
         self.bar_fa_with_flanks = f'{self.out_dir}/barcode_with_flanks.fa'
         _file = open(self.bar_fa_with_flanks, 'w')
-        
+
         t = 0
         for barcode in barcode_seqs:
             _file.write(f'>{t}\n')
@@ -451,7 +452,7 @@ class BarcodeSet:  # inital barcode set --> final barcode set
             os.makedirs( self.out_sig_dir_path )
         if not os.path.exists( self.barcode_true_sigs_path ):
             os.makedirs( self.barcode_true_sigs_path )
-        
+
         squigulatorAPI(fastaFile = self.out_fa_path, kit = self.source_type, outDir = self.out_sig_dir_path, slow5_dir = self.out_dir, fast5 = False)
         self.read_slow5( f'{self.out_dir}/training.slow5', self.out_sig_dir_path)
 
@@ -467,8 +468,8 @@ class BarcodeSet:  # inital barcode set --> final barcode set
         self.ex_out_dir = self.out_dir + '/' + 'ex_bar_sigs'
         if not os.path.exists( self.ex_out_dir ):
             os.makedirs( self.ex_out_dir )
-        muti_find(raw_signa_dir = self.out_sig_dir_path, query_signal_path = self.adapter_sig_path, 
-        ex_out_dir = self.ex_out_dir, bar_len = self.bar_len, thread_num = self.thread_num, sig_root = 'timeSeries', 
+        muti_find(raw_signa_dir = self.out_sig_dir_path, query_signal_path = self.adapter_sig_path,
+        ex_out_dir = self.ex_out_dir, bar_len = self.bar_len, thread_num = self.thread_num, sig_root = 'timeSeries',
         kit = self.source_type, region_cutoff = 1000)
 
     def dem_by_ex_sigs_info(self):
@@ -529,25 +530,25 @@ class BarcodeSet:  # inital barcode set --> final barcode set
         self.filter_bad_barcodes()
 
 def get_parameters():
-    
+
     parser = argparse.ArgumentParser('This script attempts to solve the barcode design problem in nanopore multi-sample sequencing.')
     parser.add_argument('--length', type=int, required=True,
                         help='Specify the length of the designed barcode.')
-    
+
     parser.add_argument('--qsize', type=int, required=True,
                         help='Specify the size of the initially selected \
                         sequence space, which is recommended to be more than 100000.')
-    
+
     parser.add_argument('--outdir', type=str, required=True,
                         help='Specify the output file, which contains the final barcode sequences.')
 
     parser.add_argument('--seed', type=int, required=False, default=0,
                         help='Specify a random seed to determine the initially selected barcode signal, \
                         have a slight impact on the size of the final barcode set.')
-    
-    parser.add_argument('--threshold', type=float, required=False, default = 0, 
+
+    parser.add_argument('--threshold', type=float, required=False, default = 0,
                         help='Specify a value to control the threshold of the TDFPS algorithm, the recommended value is 0~30.')
-    
+
     parser.add_argument('--thread-num', type=int, required=False, default=32,
                         help='Specify the number of threads.')
 
@@ -581,13 +582,13 @@ def get_parameters():
                         help='Based on biological criteria, sequences with a GC content lower than 0.4 or greater than 0.6, sequences containing reapte triples, sequences containing GGC, and self-complementary sequences were filtered out.')
 
     args = parser.parse_args()
-    
+
     return args
-        
+
 def main():
-    
+
     args = get_parameters()
-    
+
     byFPSCudaDTWFinalSelection(selectLength=args.length, selectQuantity=args.qsize, randomSeed=args.seed, \
                                outDir = args.outdir, \
                                thresFactor=args.threshold, threadNum=args.thread_num, mode=args.mode, fastaFilePath=args.fasta, \
