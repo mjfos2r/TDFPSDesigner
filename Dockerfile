@@ -55,8 +55,8 @@ RUN python3.7 -m pip install --upgrade pip \
     && cd ../squigulator \
     && make \
     && cp squigulator ../bin/squigulator \
-    && cd .. \
-    && ./scripts/compile.sh \
+    && cd ..
+RUN ./scripts/compile.sh \
     && chmod u+x bin/*
 
 # now we make sure that all of our cuda paths are kosher
